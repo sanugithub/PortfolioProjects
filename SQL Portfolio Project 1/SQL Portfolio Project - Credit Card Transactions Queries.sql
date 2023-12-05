@@ -1,7 +1,7 @@
 /*
 Credit Card Transactions Queries
 
-Skills used: Joins, CTE's, Date Functions, Windows Functions, Aggregate Functions
+Skills used: Joins, CTE's, Date Functions, Windows Functions, Aggregate Functions, Use cases, Converting Data Types(cast())
 
 */
 
@@ -16,32 +16,28 @@ sum(spends) over(order by spends desc rows between unbounded preceding and unbou
 from c_s
 ),
 p_cs as (select *
---,FORMAT(round(spends*100.0/total_spends,5),'0.#####') as percentage_contribution
-,spends*100.0/total_spends as percentage_contribution
+,cast(spends*100.0/total_spends as decimal(5,2)) as percentage_contribution
 from c_ts),
 rk_s as (select *,
 rank() over(order by spends desc) as rnk
 from p_cs)
-select city,spends,percentage_contribution from rk_s where rnk<=5
+select city,spends,total_spends,percentage_contribution from rk_s where rnk<=5
 
 --- query to print highest spend month and amount spent in that month for each card type
-with ymc_a as (select
-datepart(year,transaction_date) as transaction_year,datepart(month,transaction_date) as transaction_month,
-card_type,sum(amount) as spend_month
+with cte as (
+select card_type,DATEPART(year,transaction_date) as yo,DATENAME(month,transaction_date) as mo
+, sum(amount) as monthly_expense
 from credit_card_transactions
-group by datepart(year,transaction_date),datepart(month,transaction_date),card_type),
-hsm as (select *,
-sum(spend_month) over(partition by transaction_year,transaction_month order by spend_month desc rows between unbounded preceding and unbounded following) as highest_spend_month
-from ymc_a)
-select * from 
-(select *,
-dense_rank() over(order by highest_spend_month desc) as rnk
-from hsm) A 
-where rnk=1
+group by card_type,DATEPART(year,transaction_date),DATENAME(month,transaction_date))
+select * from ( 
+select *
+, rank() over(partition by card_type order by monthly_expense desc) as rn
+from cte) A
+where rn=1;
 
 -- query to print the transaction details(all columns from the table) for each card type when it reaches a cumulative of 1000000 total spends(We should have 4 rows in the o/p one for each card type)
 with rts as (select *,
-sum(amount) over(partition by card_type order by amount rows between unbounded preceding and current row) as running_total_spends
+sum(amount) over(partition by card_type order by transaction_date,transaction_id rows between unbounded preceding and current row) as running_total_spends
 from credit_card_transactions),
 fcs as (select *
 from rts
@@ -53,22 +49,13 @@ from fcs) A
 where rnk=1
 
 -- query to find city which had lowest percentage spend for gold card type
-with ccs as (select card_type,city,sum(amount) as spend
+select top 1 city,sum(amount) as total_spend
+, sum(case when card_type='Gold' then amount else 0 end) as gold_spend
+,sum(case when card_type='Gold' then amount else 0 end)*1.0/sum(amount)*100 as gold_contribution
 from credit_card_transactions
-where card_type='Gold'
-group by card_type,city),
-ts as (select *,
-sum(spend) over(order by spend rows between unbounded preceding and unbounded following) as total_spends
-from ccs),
-per_s as (select *
---,format(round(spend*100.0/total_spends,5),'0.#####') as percentage_spend
-,spend*100.0/total_spends as percentage_spend
-from ts)
-select * from
-(select *,
-rank() over(order by percentage_spend) as rnk
-from per_s) A
-where rnk=1
+group by city
+having sum(case when card_type='Gold' then amount else 0 end) > 0
+order by gold_contribution
 
 -- query to print 3 columns:  city, highest_expense_type , lowest_expense_type (example: Delhi , bills, Fuel)
 with cte as (select city,exp_type,sum(amount) as total_amount
@@ -84,14 +71,12 @@ inner join cte2 as l_cte on h_cte.city=l_cte.city and h_cte.highest_rnk=l_cte.lo
 where h_cte.highest_rnk=1 and l_cte.lowest_rnk=1
 
 -- query to find percentage contribution of spends by females for each expense type
-with cte as (select gender,exp_type,sum(amount) as spends
+with cte as (select exp_type,sum(amount) as total_spend
+, sum(case when gender='F' then amount else 0 end) as female_spend
 from credit_card_transactions
-where gender='F'
-group by gender,exp_type),
-cte2 as (select *,
-sum(spends) over(order by spends rows between unbounded preceding and unbounded following) as total_spends
-from cte)
-select *,spends*100.0/total_spends as spends_percent_contribution from cte2
+group by exp_type)
+select *,female_spend*100.0/total_spend as female_contribution 
+from cte order by female_contribution
 
 -- card and expense type combination with highest month over month growth in Jan-2014
 with cte as (select *,format(transaction_date,'yyyyMM') as yr_mth
@@ -103,12 +88,12 @@ group by card_type,exp_type,yr_mth),
 cte3 as (select *,
 lag(spends,1) over(partition by card_type,exp_type order by yr_mth) as prev_spend
 from cte2),
-cte4 as (select *,(spends-prev_spend)*100.0/prev_spend as mom
+cte4 as (select *,spends-prev_spend as mom_growth
 from cte3
 where yr_mth=201401)
 select * from 
-(select card_type,exp_type,yr_mth,mom,
-rank() over(partition by card_type order by mom desc) as rnk
+(select card_type,exp_type,yr_mth,spends,prev_spend,mom_growth,
+rank() over(order by mom_growth desc) as rnk
 from cte4) A
 where rnk=1
 
