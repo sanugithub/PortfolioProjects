@@ -1,0 +1,4 @@
+1. created a s3 bucket where customer subscription csv data is added on daily basis (filename with date)
+2. ran a crawler over s3 bucket to create metadata table on the top of it.
+3. created a visual etl job where I chose glue catalog table(for s3) as source, formed dataframe from it and enabled job bookmark.
+4. only new or updated data will be added to the dataframe in incremental manner

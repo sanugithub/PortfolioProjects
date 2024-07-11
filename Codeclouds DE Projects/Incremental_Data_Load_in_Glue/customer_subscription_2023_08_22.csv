@@ -1,0 +1,11 @@
+CustomerID,FirstName,LastName,PlanType,MonthlyCharge,SubscriptionDate
+1201,Angela,Evans,Postpaid,48,2022-01-12
+1202,Angelina,Hall,Prepaid,29,2022-03-15
+1203,Anita,Collins,Postpaid,56,2022-04-20
+1204,Anna,Edwards,Prepaid,27,2022-06-25
+1205,Anne,Walker,Postpaid,50,2022-08-12
+1206,Anthony,White,Prepaid,33,2022-09-22
+1207,Antonio,Turner,Postpaid,49,2023-02-20
+1208,April,Phillips,Prepaid,30,2023-03-18
+1209,Archer,Perez,Postpaid,56,2023-05-10
+1210,Aria,Campbell,Prepaid,28,2023-06-21
