@@ -1,0 +1,10 @@
+1. this was a streaming project
+2. There was a source from where records(orderid, product_name, quantity, price) were being written into the nosql dynamodb(which is a key value based db).
+3. we created a dynamodb table where we targeted particular partition key(orderid) and the entire data(orderid, product_name, quantity, price) used to get ingested as a value there. That's how we were publishing a record in dynamodb.
+4. Next our task was to capture changes happening in table. Records were getting inserted, updated/deleted to table in real time. CDC is whatever changes are happening in real time we capture those changes. That's what CDC is. So we needed to enable dynamodb streams from 'Exports & Streams' option to perform CDC. As we were able to consume the CDC changes, hence created CDC pipeline.
+5. Then we set up a kinesis stream which is a queuing mechanism to hold our data. Kinesis stream has a concept of shards just like publishing data to partitions. Data here arrives kinesis stream in different shard.
+6. Then we had a event bridge pipe in between dynamodb stream and kinesis stream. We set a batch size consisting of no of message to be sent to any kinesis stream shard. Set up required IAM role to eventbridge pipe to access dynamo stream & kinesis stream. Using event bridge we used to flow data to kinesis stream.
+7. Next we created a firehose stream which is a delivery stream. It processes data(like ingest, transform) and delivers streaming data to destinations(like data lakes, data warehouses). Here source is kinesis stream and destination is s3. Using delivery stream we were batching the records and transforming those mini batch records using lambda function. Once this is done, then delivering the transformed batch records to S3.
+8. Lastly, we created crawler over s3 target path. Also, needed to add classifier for json format(i.e. $.columns).
+9. Table over s3 target formed after running crawler and got that table in athena.
+10. Using athena query we then did analysis.
