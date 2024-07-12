@@ -15,12 +15,11 @@ Python Package For Installation
 pip3 install google-cloud-pubsub
 pip3 install cassandra-driver
 
-Docker command to start cassandra
+install & start cassandra
 ----------------------------------
 
 docker compose -f docker-compose-cassandra.yml up -d
 
-* Once cassandra container started, open the terminal of docker container
 * type cqlsh on terminal
 * cqlsh shell will be opened and now cassandra related commands can be executed
 
