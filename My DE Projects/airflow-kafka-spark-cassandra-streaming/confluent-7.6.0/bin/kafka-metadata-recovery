@@ -1,0 +1,4 @@
+#!/bin/bash
+# Copyright 2023 Confluent Inc.
+
+exec $(dirname $0)/kafka-run-class io.confluent.kafka.tools.recovery.MetadataRecoveryTool "$@"

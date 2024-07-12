@@ -1,0 +1,80 @@
+[2024-01-27T05:47:53.748+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: user_automation.stream_data_from_api manual__2024-01-27T05:47:41.202781+00:00 [queued]>
+[2024-01-27T05:47:53.772+0000] {taskinstance.py:1159} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: user_automation.stream_data_from_api manual__2024-01-27T05:47:41.202781+00:00 [queued]>
+[2024-01-27T05:47:53.778+0000] {taskinstance.py:1361} INFO - Starting attempt 1 of 1
+[2024-01-27T05:47:53.801+0000] {taskinstance.py:1382} INFO - Executing <Task(PythonOperator): stream_data_from_api> on 2024-01-27 05:47:41.202781+00:00
+[2024-01-27T05:47:53.832+0000] {standard_task_runner.py:57} INFO - Started process 92 to run task
+[2024-01-27T05:47:53.846+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'user_automation', 'stream_data_from_api', 'manual__2024-01-27T05:47:41.202781+00:00', '--job-id', '4', '--raw', '--subdir', 'DAGS_FOLDER/kafka_stream.py', '--cfg-path', '/tmp/tmprjqedn_n']
+[2024-01-27T05:47:53.861+0000] {standard_task_runner.py:85} INFO - Job 4: Subtask stream_data_from_api
+[2024-01-27T05:47:54.018+0000] {task_command.py:415} INFO - Running <TaskInstance: user_automation.stream_data_from_api manual__2024-01-27T05:47:41.202781+00:00 [running]> on host 01c8c4768a7d
+[2024-01-27T05:47:54.278+0000] {taskinstance.py:1660} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airscholar' AIRFLOW_CTX_DAG_ID='user_automation' AIRFLOW_CTX_TASK_ID='stream_data_from_api' AIRFLOW_CTX_EXECUTION_DATE='2024-01-27T05:47:41.202781+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-01-27T05:47:41.202781+00:00'
+[2024-01-27T05:47:54.371+0000] {conn.py:380} INFO - <BrokerConnection node_id=bootstrap-0 host=broker:29092 <connecting> [IPv4 ('172.23.0.8', 29092)]>: connecting to broker:29092 [('172.23.0.8', 29092) IPv4]
+[2024-01-27T05:47:54.374+0000] {conn.py:1205} INFO - Probing node bootstrap-0 broker version
+[2024-01-27T05:47:54.381+0000] {conn.py:410} INFO - <BrokerConnection node_id=bootstrap-0 host=broker:29092 <connecting> [IPv4 ('172.23.0.8', 29092)]>: Connection complete.
+[2024-01-27T05:47:54.499+0000] {conn.py:1267} INFO - Broker version identified as 2.5.0
+[2024-01-27T05:47:54.505+0000] {conn.py:1268} INFO - Set configuration api_version=(2, 5, 0) to skip auto check_version requests on startup
+[2024-01-27T05:47:55.296+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:47:55.302+0000] {conn.py:380} INFO - <BrokerConnection node_id=1 host=broker:29092 <connecting> [IPv4 ('172.23.0.8', 29092)]>: connecting to broker:29092 [('172.23.0.8', 29092) IPv4]
+[2024-01-27T05:47:55.305+0000] {conn.py:410} INFO - <BrokerConnection node_id=1 host=broker:29092 <connecting> [IPv4 ('172.23.0.8', 29092)]>: Connection complete.
+[2024-01-27T05:47:55.310+0000] {conn.py:919} INFO - <BrokerConnection node_id=bootstrap-0 host=broker:29092 <connected> [IPv4 ('172.23.0.8', 29092)]>: Closing connection. 
+[2024-01-27T05:47:55.875+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:47:56.525+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:47:57.717+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:47:58.359+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:47:59.690+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:03.392+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:05.287+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:07.491+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:09.673+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:10.749+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:11.483+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:12.354+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:12.977+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:13.678+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:14.737+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:15.833+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:16.980+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:18.079+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:19.049+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:19.812+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:20.548+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:21.872+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:23.435+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:24.108+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:25.050+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:25.651+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:26.348+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:27.099+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:27.752+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:28.420+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:29.094+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:30.257+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:30.916+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:31.756+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:32.517+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:34.012+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:34.835+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:35.662+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:36.896+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:38.544+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:39.194+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:40.099+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:41.496+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:42.565+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:43.307+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:44.685+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:45.371+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:46.388+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:47.696+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:48.626+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:49.250+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:49.871+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:50.443+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:51.049+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:53.134+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:53.779+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:55.189+0000] {logging_mixin.py:151} INFO - Record Inserted !!
+[2024-01-27T05:48:55.224+0000] {conn.py:919} INFO - <BrokerConnection node_id=1 host=broker:29092 <connected> [IPv4 ('172.23.0.8', 29092)]>: Closing connection. 
+[2024-01-27T05:48:55.242+0000] {python.py:194} INFO - Done. Returned value was: None
+[2024-01-27T05:48:55.474+0000] {taskinstance.py:1400} INFO - Marking task as SUCCESS. dag_id=user_automation, task_id=stream_data_from_api, execution_date=20240127T054741, start_date=20240127T054753, end_date=20240127T054855
+[2024-01-27T05:48:56.062+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2024-01-27T05:48:56.417+0000] {taskinstance.py:2784} INFO - 0 downstream tasks scheduled from follow-on schedule check

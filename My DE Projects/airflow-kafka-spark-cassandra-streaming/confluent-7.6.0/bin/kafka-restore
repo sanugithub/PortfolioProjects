@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#
+# Copyright 2022 Confluent Inc.
+#
+set -o errexit \
+    -o verbose
+
+namespace=${1}
+
+echo "===> Adding logging json layout to CLASSPATH ... "
+export CLASSPATH=/usr/share/java/cc-base/log4j-json-layout-${CC_BASE_VERSION}.jar
+
+echo "===> Adding kafka log4j config ... "
+cp /mnt/config/shared/log4j.properties /
+if [ -n "${namespace}" ]; then
+  echo -e "\nlog4j.appender.jsonlog.layout.fields=app:kafka-restore,clusterId:${namespace},server:0" >> /log4j.properties
+  echo -e "\nlog4j.appender.stdout.layout.fields=app:kafka-restore,clusterId:${namespace},server:0" >> /log4j.properties
+fi
+export KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:/log4j.properties"
+
+echo "===> Adding jolokia agent to the java command ... "
+export JOLOKIA_AGENT_PORT=${JOLOKIA_AGENT_PORT:-7777}
+export JOLOKIA_AGENT_HOST=${JOLOKIA_AGENT_HOST:-"0.0.0.0"}
+export EXTRA_ARGS="${EXTRA_ARGS} -javaagent:/opt/caas/lib/jolokia/jolokia-jvm-${JOLOKIA_AGENT_VERSION}.jar=port=${JOLOKIA_AGENT_PORT},host=${JOLOKIA_AGENT_HOST}"
+
+cp /opt/caas/templates/otel-javaagent.properties /opt/caas/config/otel-javaagent.properties
+
+if [[ "${ENABLE_OTEL_JAVA_AGENT}" == "TRUE" ]]; then
+  echo "====> Adding OpenTelemetry Java agent to the java command ..."
+  export OTEL_EXPORTER_OTLP_ENDPOINT=http://${HOST_IP}:14317
+  export OTEL_SERVICE_NAME=${namespace}-restore
+  source /opt/caas/lib/otel-agent/otel-agent-env.sh
+  export JDK_JAVA_OPTIONS="${JDK_JAVA_OPTIONS} -Dotel.javaagent.configuration-file=/opt/caas/config/otel-javaagent.properties -Dotel.jmx.config=/mnt/config/restore/kafka-restore-jmx.yaml";
+fi
+
+echo "===> Running restore ... "
+exec /opt/confluent/bin/kafka-run-class $EXTRA_ARGS kafka.restore.Restore --partition-file /mnt/restore/partitions.yaml --clusterid "${namespace}"
