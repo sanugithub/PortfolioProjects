@@ -1,0 +1,60 @@
+{
+    "type": "record",
+    "namespace": "com.kaggle.olist",
+    "name": "Orders",
+    "fields": [
+      {
+        "name": "order_id",
+        "type": {
+            "type": "string",
+            "logicalType": "uuid"
+        }
+      },
+      {
+        "name": "customer_id",
+        "type": {
+            "type": "string",
+            "logicalType": "uuid"
+        }
+      },
+      {
+        "name": "order_status",
+        "type": "string"
+      },
+      {
+        "name": "order_purchase_timestamp",
+        "type": {
+            "type": "string",
+            "logicalType": "timestamp"
+        }
+      },
+      {
+        "name": "order_approved_at",
+        "type": {
+            "type": "string",
+            "logicalType": "timestamp"
+        }
+      },
+      {
+        "name": "order_delivered_carrier_date",
+        "type": {
+            "type": "string",
+            "logicalType": "timestamp"
+        }
+      },
+      {
+        "name": "order_delivered_customer_date",
+        "type": {
+            "type": "string",
+            "logicalType": "timestamp"
+        }
+      },
+      {
+        "name": "order_estimated_delivery_date",
+        "type": {
+            "type": "string",
+            "logicalType": "timestamp"
+        }
+      }
+    ]
+  }
