@@ -107,6 +107,8 @@ data.dtypes
 # Define Kafka configuration
 kafka_config = {
     'bootstrap.servers': 'pkc-l7pr2.ap-south-1.aws.confluent.cloud:9092',
+    'enable.idempotence': True, #prevents duplicate message to produce & ensures it's written in order
+    'acks': 'all',
     'sasl.mechanisms': 'PLAIN',
     'security.protocol': 'SASL_SSL',
     'sasl.username': 'DSZRFJEEYC5DJRGR',
