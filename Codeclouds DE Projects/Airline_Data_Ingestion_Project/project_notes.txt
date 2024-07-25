@@ -1,3 +1,4 @@
+1. this project was about achieving daily incremental data load in redshift fact table(destination table) i.e as soon as S3 bucket receives any file we needed to start the process.
 1. created two separate folders in s3 bucket- one for daily raw where we have flights partitioned data and other for dimension table airport data.
 2. here flights data acting as fact on and airports data as dimension table
 3. Fact table contains quantitative data and primary keys for referenced dimension tables.
