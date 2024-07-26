@@ -1,7 +1,7 @@
 1. this project was about achieving daily incremental data load in redshift fact table(destination table) i.e as soon as S3 bucket receives any file we needed to start the process.
 1. created two separate folders in s3 bucket- one for daily raw where we have flights partitioned data and other for dimension table airport data.
-2. here flights data acting as fact on and airports data as dimension table
-3. Fact table contains quantitative data and primary keys for referenced dimension tables.
+2. here flights data acting as fact table and airports data as dimension table
+3. Fact table contains numerical data and primary keys for referenced dimension tables.
 4. Dimension tables contain descriptive information. Like here its containing information for each airport
 5. On the redshift warehouse, we created 2 tables. One is redshift dimension table 'airports_dim' where we load data from s3 bucket dimension data 'dims' folder into 'airports_dim' redshift table. Other is redhsift fact table 'daily_flights_fact' as destination table.
 6. next we create crawlers over s3 daily raw flights data, redshift dimension table and redshift destination table which will be creating glue catalog metadata tables.
