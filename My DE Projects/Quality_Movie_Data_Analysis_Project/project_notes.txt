@@ -4,7 +4,7 @@
 4. Created a jdbc connection for connecting crawler to redshift target table. That crawler will be crawling the target redshift table where output results will be loaded
 5. build an etl job where s3 input source being read from data catalog. Then we add our first transformation to include our data quality rule set where I also enabled 'add new columns on data quality errors'.
 6. We further do 2 more transformation- rowLevelOutcomes and ruleOutcomes
-7. ruleOutcomes will be having rule wise outcome with pass or fail reason. And we were storing those in json format at s3 bucket another folder.
+7. ruleOutcomes will be having rule wise outcome with pass or fail reason. And we were storing those in json format at s3 bucket another folder 'rule_outcome'.
 8. On the other hand, rowLevelOutcomes will be having row wise outcome with pass or fail reason.
 9. Following rowLevelOutcomes, we further next added a conditional router where we checked with filter condition whether 'DataQualityEvaluationResult' matches 'Passed' value or not.
 10. once we have groups on failed and passed records group. For failed records, we were storing data in json format at s3 bucket 'bad_records' folder. For passed records, first we were applying 'change schema' transform where we matched both the source key and target key(redshift target table) column's data types and also dropping the 'data quality' additional columns.
