@@ -101,7 +101,8 @@ set_hive_properties_and_load_partitioned = DataprocSubmitHiveJobOperator(
         SET hive.exec.dynamic.partition.mode = nonstrict;
 
         INSERT INTO logistics_db.logistics_data_partitioned PARTITION(`date`)
-        SELECT delivery_id, origin,destination, vehicle_type, delivery_status, delivery_time, `date` FROM logistics_db.logistics_data;
+        SELECT delivery_id, origin,destination, vehicle_type, delivery_status, 
+        delivery_time, `date` FROM logistics_db.logistics_data;
     """,
     cluster_name='compute-cluster',
     region='us-central1',
@@ -112,7 +113,9 @@ set_hive_properties_and_load_partitioned = DataprocSubmitHiveJobOperator(
 # Move processed files to archive bucket
 archive_processed_file = BashOperator(
     task_id='archive_processed_file',
-    bash_command=f"gsutil -m mv gs://logistics-raw-gds/input_data/logistics_*.csv gs://logistics-archive-gds/",
+    bash_command=f"gsutil -m mv 
+    gs://logistics-raw-gds/input_data/logistics_*.csv 
+    gs://logistics-archive-gds/",
     dag=dag
 )
 
