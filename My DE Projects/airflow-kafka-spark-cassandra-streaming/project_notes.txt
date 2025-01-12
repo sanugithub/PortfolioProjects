@@ -1,8 +1,0 @@
-1. installed confluent kafka & airflow locally following the doc notes.
-2. open both kafka & airflow dashboard on browser locally
-3. from the airflow script we were publishing data to kafka topic
-4. so we create kafka topic 'users_data' in confluent kafka and schedule the dag file where records started publishing to kafka topic. Checked both dag file logs and kafka topic messages.
-5. Next the data was streaming from kafka and ingesting into cassandra. For this wrote a spark_stream script where first I established a spark connection. Inside spark connection we included all the jar files using which spark can communicate with both kafka and cassandra. Used jar files based on our pyspark version.
-6. Once spark connection is done, next we created dataframe by connecting & reading data from kafka topic. So we were getting data in the form of key value pair where we were our own schema to get a clean row columnar based dataframe.
-7. Next we created cassandra connection. We created keyspace and table using connection.
-8. Then we were writing dataframe into cassandra using spark writeStream

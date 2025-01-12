@@ -16,12 +16,15 @@ payment_methods = ["Credit Card", "Debit Card", "PayPal", "Google Pay", "Apple P
 
 def generate_mock_payment(order_id):
     return {
-        "payment_id": order_id + 1000,  # Starting from 1001 as in the example
+        # Starting from 1001 as in the example
+        "payment_id": order_id + 1000,  
         "order_id": order_id,
         "payment_method": choice(payment_methods),
-        "card_last_four": str(order_id).zfill(4)[-4:],  # Just using order_id to make last 4 digits
+        # Just using order_id to make last 4 digits
+        "card_last_four": str(order_id).zfill(4)[-4:],  
         "payment_status": "Completed",
-        "payment_datetime": f"2024-01-21T{str(order_id).zfill(2)}:01:30Z"  # Using order_id to vary the hour for variety
+        # Using order_id to vary the hour for variety
+        "payment_datetime": f"2024-01-21T{str(order_id).zfill(2)}:01:30Z"  
     }
 
 def callback(future):

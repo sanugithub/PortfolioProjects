@@ -36,7 +36,8 @@ cluster,session = cassandra_connection()
 
 # Prepare the Cassandra insertion statement
 insert_stmt = session.prepare("""
-    INSERT INTO orders_payments_facts (order_id, customer_id, item, quantity, price, shipping_address, order_status, creation_date, payment_id, payment_method, card_last_four, payment_status, payment_datetime)
+    INSERT INTO orders_payments_facts (order_id, customer_id, item, quantity, price, shipping_address, 
+    order_status, creation_date, payment_id, payment_method, card_last_four, payment_status, payment_datetime)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 """)
 

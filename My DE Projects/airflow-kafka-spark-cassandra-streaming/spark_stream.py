@@ -6,6 +6,29 @@ from pyspark.sql.functions import from_json, col
 from pyspark.sql.types import StructType, StructField, StringType
 
 
+def create_spark_connection():
+    s_conn = None
+
+    try:
+        print("Creating spark session!")
+        print("********************************************************")
+        s_conn = SparkSession.builder \
+            .appName('SparkDataStreaming') \
+            .config('spark.jars.packages', "com.datastax.spark:spark-cassandra-connector_2.12:3.4.0,"
+                                           "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0") \
+            .config('spark.cassandra.connection.host', 'localhost') \
+            .getOrCreate()
+
+        s_conn.sparkContext.setLogLevel("ERROR")
+        print("Spark connection created successfully!")
+        print("********************************************************")
+    except Exception as e:
+        print(f"Couldn't create the spark session due to exception {e}")
+        print("********************************************************")
+
+    return s_conn
+
+
 def create_keyspace(session):
     session.execute("""
         CREATE KEYSPACE IF NOT EXISTS spark_streams
@@ -66,28 +89,20 @@ def insert_data(session, **kwargs):
         print("********************************************************")
 
 
-def create_spark_connection():
-    s_conn = None
-
+def create_cassandra_connection():
     try:
-        print("Creating spark session!")
-        print("********************************************************")
-        s_conn = SparkSession.builder \
-            .appName('SparkDataStreaming') \
-            .config('spark.jars.packages', "com.datastax.spark:spark-cassandra-connector_2.12:3.4.0,"
-                                           "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0") \
-            .config('spark.cassandra.connection.host', 'localhost') \
-            .getOrCreate()
+        # connecting to the cassandra cluster
+        cluster = Cluster(['localhost'])
 
-        s_conn.sparkContext.setLogLevel("ERROR")
-        print("Spark connection created successfully!")
+        cas_session = cluster.connect()
+        print("Cassandra session created succesfully!")
         print("********************************************************")
+
+        return cas_session
     except Exception as e:
-        print(f"Couldn't create the spark session due to exception {e}")
+        print(f"Could not create cassandra connection due to {e}")
         print("********************************************************")
-
-    return s_conn
-
+        return None
 
 def connect_to_kafka(spark_conn):
     spark_df = None
@@ -106,23 +121,6 @@ def connect_to_kafka(spark_conn):
         print("********************************************************")
 
     return spark_df
-
-
-def create_cassandra_connection():
-    try:
-        # connecting to the cassandra cluster
-        cluster = Cluster(['localhost'])
-
-        cas_session = cluster.connect()
-        print("Cassandra session created succesfully!")
-        print("********************************************************")
-
-        return cas_session
-    except Exception as e:
-        print(f"Could not create cassandra connection due to {e}")
-        print("********************************************************")
-        return None
-
 
 def create_selection_df_from_kafka(spark_df):
     schema = StructType([
