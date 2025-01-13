@@ -1,6 +1,0 @@
-1. This was about processing real-time advertisement data using Spark Streaming to gain business insights and store the aggregated data into Cassandra.
-2. I set up confluent kafka in local system and created topic named as ads_data. Wrote a python script to generate ads data in json format using 'random_mock_data_generator.py' file
-3. Created a producer script which was publishing those json ads data into kafka topic.
-4. Next I set up a spark streaming application where I used the kafka connector to read data from ads_data topic. Then parsed the json data into proper structure using my defined schema.
-5. Further transformed data by performed windowed based aggregation.
-6. Next included cassandra connection script into spark stream app so that I can write aggregated data into cassandra table. But writing data with the logic was like if entry already existed with 'ad_id' then updated that record or else inserting new entry in table.

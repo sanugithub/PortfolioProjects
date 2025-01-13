@@ -1,4 +1,4 @@
-create schem telecom;
+create schema telecom;
 
 CREATE TABLE telecom_data (
     caller_name VARCHAR(256),

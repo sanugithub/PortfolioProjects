@@ -29,9 +29,6 @@ kafka_config = {
 }
 
 
-# In[ ]:
-
-
 # Create a Schema Registry client
 schema_registry_client = SchemaRegistryClient({
     'url': 'https://psrc-10dzz.ap-southeast-2.aws.confluent.cloud',
@@ -46,18 +43,10 @@ schema_str = schema_registry_client.get_latest_version(subject_name).schema.sche
 key_deserializer = StringDeserializer('utf_8')
 avro_deserializer = AvroDeserializer(schema_registry_client, schema_str)
 
-
-# In[ ]:
-
-
 # MongoDB configuration
 mongo_client = MongoClient('mongodb+srv://sb26021995:SBakcp2631@mongodb-cluster.tupuldz.mongodb.net/?retryWrites=true&w=majority&appName=mongodb-cluster')  # Replace with your MongoDB connection string
 db = mongo_client['gds_db']  # Replace with your database name
 collection = db['logistics_data']  # Replace with your collection name
-
-
-# In[ ]:
-
 
 # Define the DeserializingConsumer
 consumer = DeserializingConsumer({
@@ -74,10 +63,6 @@ consumer = DeserializingConsumer({
 
 # Subscribe to the 'logistic_data' topic
 consumer.subscribe(['logistics_data'])
-
-
-# In[ ]:
-
 
 # Process and insert Avro messages into MongoDB
 try:

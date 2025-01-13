@@ -38,8 +38,62 @@ def delivery_report(err, msg):
         msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 
-# In[72]:
+# In[73]:
 
+def convert_nan_to_long(value):
+  if math.isnan(value):
+    return 0
+  else:
+    return value
+
+
+# Load CSV data into Pandas DataFrame
+data = pd.read_csv('delivery_trip_truck_data.csv')  # Replace with your CSV file path
+
+# In[74]:
+data.head(10)
+
+# In[75]:
+object_columns = data.select_dtypes(include=['object']).columns
+data[object_columns] = data[object_columns].fillna('unknown value')
+
+# In[76]:
+data.dtypes
+
+# In[77]:
+# Define Kafka configuration
+kafka_config = {
+    'bootstrap.servers': 'pkc-l7pr2.ap-south-1.aws.confluent.cloud:9092',
+    'sasl.mechanisms': 'PLAIN',
+    'security.protocol': 'SASL_SSL',
+    'sasl.username': 'DSZRFJEEYC5DJRGR',
+    'sasl.password': 'G2Ipwc64/MaBLAHyCO7r5ilzvwL1WfYGx8kmJYR6mW0IdFSC6SZS9ePJOteK+Wtr'
+}
+
+# Create a Schema Registry client
+schema_registry_client = SchemaRegistryClient({
+    'url': 'https://psrc-10dzz.ap-southeast-2.aws.confluent.cloud',
+    'basic.auth.user.info': '{}:{}'.format('L5DYQTKB4BQ6PNOI', '5/+eLthGNYX3o61kbqm37EhIuqmjcSSnQZOE+FsOgQUh5zvOYkQ5mzNdSJYZ5Zsi')
+})
+
+# Fetch the latest Avro schema for the value
+subject_name = 'logistics_data-value'  # Adjust the subject name accordingly
+schema_str = schema_registry_client.get_latest_version(subject_name).schema.schema_str
+
+# Create Avro Serializer for the value
+key_serializer = StringSerializer('utf_8')
+avro_serializer = AvroSerializer(schema_registry_client, schema_str)
+
+# Define the SerializingProducer
+producer = SerializingProducer({
+    'bootstrap.servers': kafka_config['bootstrap.servers'],
+    'security.protocol': kafka_config['security.protocol'],
+    'sasl.mechanisms': kafka_config['sasl.mechanisms'],
+    'sasl.username': kafka_config['sasl.username'],
+    'sasl.password': kafka_config['sasl.password'],
+    'key.serializer': key_serializer,
+    'value.serializer': avro_serializer
+})
 
 def fetch_and_produce_data(producer, data):
     for index, row in data.iterrows():
@@ -89,85 +143,7 @@ def fetch_and_produce_data(producer, data):
         )
 
         print("Produced message:", logistics_data)
-
-
-# In[73]:
-
-def convert_nan_to_long(value):
-  if math.isnan(value):
-    return 0
-  else:
-    return value
-
-
-
-
-
-
-
-# Load CSV data into Pandas DataFrame
-data = pd.read_csv('delivery_trip_truck_data.csv')  # Replace with your CSV file path
-
-
-# In[74]:
-
-
-data.head(10)
-
-
-# In[75]:
-
-
-object_columns = data.select_dtypes(include=['object']).columns
-data[object_columns] = data[object_columns].fillna('unknown value')
-
-
-# In[76]:
-
-
-data.dtypes
-
-
-# In[77]:
-
-
-
-
-
-# Define Kafka configuration
-kafka_config = {
-    'bootstrap.servers': 'pkc-l7pr2.ap-south-1.aws.confluent.cloud:9092',
-    'sasl.mechanisms': 'PLAIN',
-    'security.protocol': 'SASL_SSL',
-    'sasl.username': 'DSZRFJEEYC5DJRGR',
-    'sasl.password': 'G2Ipwc64/MaBLAHyCO7r5ilzvwL1WfYGx8kmJYR6mW0IdFSC6SZS9ePJOteK+Wtr'
-}
-
-# Create a Schema Registry client
-schema_registry_client = SchemaRegistryClient({
-    'url': 'https://psrc-10dzz.ap-southeast-2.aws.confluent.cloud',
-    'basic.auth.user.info': '{}:{}'.format('L5DYQTKB4BQ6PNOI', '5/+eLthGNYX3o61kbqm37EhIuqmjcSSnQZOE+FsOgQUh5zvOYkQ5mzNdSJYZ5Zsi')
-})
-
-# Fetch the latest Avro schema for the value
-subject_name = 'logistics_data-value'  # Adjust the subject name accordingly
-schema_str = schema_registry_client.get_latest_version(subject_name).schema.schema_str
-
-# Create Avro Serializer for the value
-key_serializer = StringSerializer('utf_8')
-avro_serializer = AvroSerializer(schema_registry_client, schema_str)
-
-# Define the SerializingProducer
-producer = SerializingProducer({
-    'bootstrap.servers': kafka_config['bootstrap.servers'],
-    'security.protocol': kafka_config['security.protocol'],
-    'sasl.mechanisms': kafka_config['sasl.mechanisms'],
-    'sasl.username': kafka_config['sasl.username'],
-    'sasl.password': kafka_config['sasl.password'],
-    'key.serializer': key_serializer,
-    'value.serializer': avro_serializer
-})
-
+        
 fetch_and_produce_data(producer, data)
 
 # Close the producer after processing all rows

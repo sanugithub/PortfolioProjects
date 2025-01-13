@@ -53,7 +53,10 @@ df = spark.readStream.format("kafka")\
 df = df.select(from_json(col("value").cast("string"), schema).alias("data")).select("data.*")
 
 # Perform the aggregation in windows of 1 minute and sliding interval of 30 secs
-df = df.groupBy("ad_id", window(df.timestamp, "1 minute", "30 seconds")).agg(sum("clicks").alias("total_clicks"),sum("views").alias("total_views"),sum("cost").alias("total_cost"),sum("cost")/sum("views").alias("avg_cost_per_view"))
+df = df.groupBy("ad_id", window(df.timestamp, "1 minute", "30 seconds")).agg(sum("clicks").alias("total_clicks"),
+                                                                             sum("views").alias("total_views"),
+                                                                             sum("cost").alias("total_cost"),
+                                                                             sum("cost")/sum("views").alias("avg_cost_per_view"))
 
 
 ########## connect cassandra db ###########
