@@ -1,4 +1,0 @@
-#!/bin/bash
-# Copyright 2022 Confluent Inc.
-
-exec $(dirname $0)/kafka-run-class org.apache.kafka.tools.cellsadmincmd.CellsAdminCommand "$@"

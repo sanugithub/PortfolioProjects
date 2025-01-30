@@ -1,1 +1,0 @@
-confluent version v3.48.0
