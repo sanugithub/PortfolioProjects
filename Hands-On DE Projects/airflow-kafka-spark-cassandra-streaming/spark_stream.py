@@ -6,6 +6,7 @@ from pyspark.sql.functions import from_json, col
 from pyspark.sql.types import StructType, StructField, StringType
 
 
+
 def create_spark_connection():
     s_conn = None
 
